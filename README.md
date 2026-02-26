@@ -34,3 +34,66 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+
+
+app/
+│
+├── layout.tsx                     (Root layout – shared layout, metadata, SEO)
+├── globals.css                    (Global styles)
+│
+├── middleware.ts                  (Protect routes + auto redirect logic)
+│
+├── login/
+│   ├── page.tsx                   (Login page UI – client component for form)
+│   └── loading.tsx                (Login loading state)
+│
+├── products/
+│   ├── page.tsx                   (SSR product listing page)
+│   ├── loading.tsx                (Loading state for SSR)
+│   ├── error.tsx                  (Error boundary for product fetch)
+│   └── [id]/
+│       └── page.tsx               (SSR product detail page)
+│
+├── cart/
+│   └── page.tsx                   (Shopping cart page – client component)
+│
+├── api/                           (🚨 Your backend layer – required)
+│   ├── auth/
+│   │   ├── login/
+│   │   │   └── route.ts           (POST – call dummyjson login + set cookies)
+│   │   ├── refresh/
+│   │   │   └── route.ts           (POST – refresh tokens + update cookies)
+│   │   ├── me/
+│   │   │   └── route.ts           (GET – get logged in user using access token)
+│   │   └── logout/
+│   │       └── route.ts           (POST – clear cookies)
+│   │
+│   ├── products/
+│   │   ├── route.ts               (GET – products list with pagination/sort)
+│   │   ├── categories/
+│   │   │   └── route.ts           (GET – product categories)
+│   │   └── [id]/
+│   │       └── route.ts           (GET – product by ID)
+│
+├── components/
+│   ├── ProductCard.tsx            (Reusable product card UI)
+│   ├── Navbar.tsx                 (Navigation bar with logout/cart count)
+│   ├── Pagination.tsx             (Pagination component)
+│   ├── CategoryFilter.tsx         (Category filter component)
+│   └── SortDropdown.tsx           (Sorting component)
+│
+├── store/
+│   └── cartStore.ts               (Redux Toolkit or Context – cart state)
+│
+├── lib/
+│   ├── auth.ts                    (Helper: token validation / cookie utils)
+│   ├── fetcher.ts                 (Reusable server fetch wrapper)
+│   └── types.ts                   (TypeScript interfaces for products/user)
+│
+├── tests/
+│   ├── login.test.tsx             (Login form tests)
+│   ├── cart.test.ts               (Cart reducer tests)
+│   └── products.test.ts           (Product page tests)
+│
+.env                                (Environment variables)
