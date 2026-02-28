@@ -1,8 +1,6 @@
 "use client"
-import React from 'react'
 import Image from 'next/image'
-import { Card, CardAction, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card'
-import { Badge } from '../ui/badge'
+import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card'
 import { Button } from '../ui/button'
 
 function MainBanner({ data }: { data: any }) {
@@ -12,7 +10,7 @@ function MainBanner({ data }: { data: any }) {
 
             <div className="grid gap-4 md:gap-6 grid-cols-2 lg:grid-cols-4">
                 {data.map((data: any) => (
-                    <Card className="mx-auto w-full max-w-sm overflow-hidden rounded-2xl shadow-sm hover:shadow-lg transition-all">
+                    <Card className="mx-auto w-full max-w-sm overflow-hidden rounded-[10px] shadow-sm hover:shadow-lg transition-all">
 
                         <div className="relative h-36 sm:h-48 md:h-50 w-full">
                             <Image
