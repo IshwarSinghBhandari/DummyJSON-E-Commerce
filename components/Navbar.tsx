@@ -7,6 +7,7 @@ import { Search, ShoppingCart } from 'lucide-react';
 import { Input } from './ui/input';
 import React from 'react';
 import { Button } from './ui/button';
+import logo from "@/public/logo.png"
 
 const categories = [
     { title: "Electronics", href: "/categories/electronics", description: "Gadgets, laptops, and more." },
@@ -14,24 +15,57 @@ const categories = [
     { title: "Home & Garden", href: "/categories/home", description: "Decor and outdoor essentials." },
 ];
 
-function Navbar() {
+import { ROUTE } from '@/app/util/pageRoutes';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import {
+    Avatar,
+    AvatarFallback,
+} from "@/components/ui/avatar"
+import { LogOut, User } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { SUCCESS_MESSAGE } from '@/app/util/constant';
+import { toast } from 'sonner';
+
+
+function Navbar({ loggedIn }: { loggedIn: boolean }) {
     const [search, setSearch] = React.useState("");
+    const router = useRouter();
     const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         console.log("search ", search)
     }
+
+    const logout = async () => {
+        try {
+            const response = await fetch(ROUTE.API.LOGOUT, { method: 'POST' });
+            if (response.ok) {
+                toast.success(SUCCESS_MESSAGE.LOGOUT_SUCCESS);
+                router.push(ROUTE.LOGIN);
+                router.refresh();
+            }
+        } catch (error) {
+            console.error("Logout failed", error);
+        }
+    }
+
     return (
         <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur ">
             <div className="md:px-[8%] mx-auto flex h-16 items-center px-4 justify-between gap-4">
                 <div className="hidden lg:flex items-center space-x-4 gap-4">
 
-                    <Link href="/" className='flex items-center space-x-2 mr-4'>
-                        <Image src="/logo.png" alt="logo" width="82" height="82" />
+                    <Link href={ROUTE.HOME} className='flex items-center space-x-2 mr-4'>
+                        <Image src={logo} alt="logo" width="82" height="82" />
                     </Link>
                     <NavigationMenu>
                         <NavigationMenuList>
                             <NavigationMenuItem>
-                                <Link href="/products" >
+                                <Link href={ROUTE.PRODUCTS} >
                                     <NavigationMenuLink className="font-normal">
                                         All Products
                                     </NavigationMenuLink>
@@ -82,9 +116,36 @@ function Navbar() {
 
                         <div className="hidden sm:block border-l h-6 mx-2" />
 
-                        <Button variant="default" className='' size="sm" asChild>
-                            <Link href="/login">Login</Link>
-                        </Button>
+                        {/* hide if not loggin/ */}
+                        {loggedIn ? (
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                                        <Avatar className="h-8 w-8">
+                                            <AvatarFallback> P</AvatarFallback>
+                                        </Avatar>
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent className="w-56" align="end" forceMount>
+
+                                    <DropdownMenuItem asChild>
+                                        <Link href="/profile">
+                                            <User className="mr-2 h-4 w-4" />
+                                            <span>Profile</span>
+                                        </Link>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem onClick={logout}>
+                                        <LogOut className="mr-2 h-4 w-4" />
+                                        <span>Log out</span>
+                                    </DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        ) : (
+                            <Button variant="default" className='' size="sm" asChild>
+                                <Link href={ROUTE.LOGIN}>Login</Link>
+                            </Button>
+                        )}
                     </div>
                 </div>
             </div>

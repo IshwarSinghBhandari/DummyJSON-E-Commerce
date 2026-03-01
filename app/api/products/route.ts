@@ -1,7 +1,8 @@
+import { ERROR_MESSAGE } from "@/app/util/constant";
 import { NextResponse } from "next/server";
 
 export async function GET() {
-    console.log("0---------------", process.env.BACKEND_BASE_URL)
+    // console.log("0---------------", process.env.BACKEND_BASE_URL)
     try {
         const response = await fetch(`${process.env.BACKEND_BASE_URL}/products`,
             {
@@ -15,7 +16,7 @@ export async function GET() {
     catch (e) {
         console.log(e);
         return NextResponse.json(
-            { error: "Something went wrong" },
+            { error: ERROR_MESSAGE.SOMETHING_WENT_WRONG },
             { status: 500 }
         )
     }

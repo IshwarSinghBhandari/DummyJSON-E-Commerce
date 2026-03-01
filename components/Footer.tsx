@@ -2,6 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { Separator } from "./ui/separator";
 
+import { ROUTE } from "@/app/util/pageRoutes";
+
 const footerSections = [
   {
     title: "Sitemap",
@@ -24,7 +26,7 @@ const footerSections = [
   {
     title: "Other Pages",
     links: [
-     {
+      {
         title: "Terms & Conditions",
         href: "#",
       },
@@ -44,16 +46,16 @@ const Footer = () => {
           <div className="py-8 grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 lg:grid-cols-12 gap-x-8 gap-y-10 px-6 xl:px-0">
             <div className="col-span-full lg:col-span-4">
               <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-10 duration-1000 delay-100 ease-in-out fill-mode-both">
-                  <Link href="/" className='flex items-center space-x-2 mr-4'>
-                        <Image src="/logo.png" alt="logo" width="82" height="82" />
-                    </Link>
+                <Link href={ROUTE.HOME} className='flex items-center space-x-2 mr-4'>
+                  <Image src="/logo.png" alt="logo" width="82" height="82" />
+                </Link>
 
                 <p className="text-base font-normal text-muted-foreground">
                   Empowering businesses with innovative solutions. Let's create
                   something amazing together.
                 </p>
 
-                
+
               </div>
             </div>
 
@@ -105,7 +107,7 @@ const Footer = () => {
                       href="tel:+01051923556"
                       className="text-base font-normal text-muted-foreground hover:text-foreground"
                     >
-                     9760027295
+                      9760027295
                     </a>
                   </li>
                 </ul>
