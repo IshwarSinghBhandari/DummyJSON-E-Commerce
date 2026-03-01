@@ -16,10 +16,11 @@ import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ERROR_MESSAGE } from "@/app/util/constant";
 import { LogOut } from "lucide-react";
+import { UserTypes } from "@/app/types/slice";
 
 function Profile() {
     const logout = useLogout();
-    const [user, setUser] = useState<any>(null);
+    const [user, setUser] = useState<UserTypes | null>(null);
     useEffect(() => {
         const fetchUser = async () => {
             try {
