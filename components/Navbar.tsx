@@ -45,13 +45,13 @@ function Navbar() {
                     </Link>
                     <NavigationMenu>
                         <NavigationMenuList>
-                            <NavigationMenuItem>
+                            {/* <NavigationMenuItem>
                                 <Link href={ROUTE.PRODUCTS} >
                                     <NavigationMenuLink className="font-normal">
                                         All Products
                                     </NavigationMenuLink>
                                 </Link>
-                            </NavigationMenuItem>
+                            </NavigationMenuItem> */}
 
                             <NavigationMenuItem >
                                 <NavigationMenuTrigger className='font-normal'>Categories</NavigationMenuTrigger>

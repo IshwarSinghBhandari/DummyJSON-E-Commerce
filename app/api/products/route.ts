@@ -1,23 +1,40 @@
 import { ERROR_MESSAGE } from "@/app/util/constant";
-import { NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
-    // console.log("0---------------", process.env.BACKEND_BASE_URL)
+export async function GET(request: NextRequest) {
     try {
-        const response = await fetch(`${process.env.BACKEND_BASE_URL}/products`,
-            {
-                cache: 'no-store',
-            }
-        );
+        const { searchParams } = new URL(request.url);
+        const searchData = searchParams.get("searchData");
+        const category = searchParams.get("category");
+        const limit = searchParams.get("limit") || "12";
+        const skip = searchParams.get("skip") || "0";
+        const sortBy = searchParams.get("sortBy");
+        const order = searchParams.get("order");
+
+        let url = `${process.env.BACKEND_BASE_URL}/products?limit=${limit}&skip=${skip}`;
+        if (searchData) {
+            url = `${process.env.BACKEND_BASE_URL}/products/search?q=${searchData}&limit=${limit}&skip=${skip}`;
+        } else if (category && category !== 'all') {
+            url = `${process.env.BACKEND_BASE_URL}/products/category/${category}?limit=${limit}&skip=${skip}`;
+        }
+
+        if (sortBy) {
+            const separator = url.includes('?') ? '&' : '?';
+            url += `${separator}sortBy=${sortBy}&order=${order || 'asc'}`;
+        }
+
+        const response = await fetch(url, {
+            cache: 'no-store',
+        });
+
         const data = await response.json();
-        // console.log("1---------------", data)
         return NextResponse.json(data);
-    }
-    catch (e) {
-        console.log(e);
+
+    } catch (e) {
+        console.error(e);
         return NextResponse.json(
             { error: ERROR_MESSAGE.SOMETHING_WENT_WRONG },
             { status: 500 }
-        )
+        );
     }
 }

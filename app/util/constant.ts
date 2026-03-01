@@ -17,3 +17,13 @@ export const COOKIE_NAME = {
     ACCESS_TOKEN: "accessToken",
     REFRESH_TOKEN: "refreshToken",
 }
+export const LIMIT = 12;
+
+export const SORT_OPTIONS = [
+    { label: 'Default', value: '', order: 'asc' },
+    { label: 'Name (A-Z)', value: 'title', order: 'asc' },
+    { label: 'Name (Z-A)', value: 'title', order: 'desc' },
+    { label: 'Price (Low to High)', value: 'price', order: 'asc' },
+    { label: 'Price (High to Low)', value: 'price', order: 'desc' },
+
+] as const;
