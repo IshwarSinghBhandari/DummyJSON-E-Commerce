@@ -20,31 +20,39 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
+    DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import {
     Avatar,
     AvatarFallback,
+    AvatarImage,
 } from "@/components/ui/avatar"
 import { LogOut, User } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { SUCCESS_MESSAGE } from '@/app/util/constant';
 import { toast } from 'sonner';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/app/store';
+import { logout as logoutAction } from '@/app/store/userSlice';
 
 
-function Navbar({ loggedIn }: { loggedIn: boolean }) {
-    const [search, setSearch] = React.useState("");
+function Navbar() {
+    // const [search, setSearch] = React.useState("");
     const router = useRouter();
-    const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-        console.log("search ", search)
-    }
+    const dispatch = useDispatch();
+    const user = useSelector((state: RootState) => state.user);
+    // const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    //     e.preventDefault()
+    //     console.log("search ", search)
+    // }
 
     const logout = async () => {
         try {
             const response = await fetch(ROUTE.API.LOGOUT, { method: 'POST' });
             if (response.ok) {
+                dispatch(logoutAction());
                 toast.success(SUCCESS_MESSAGE.LOGOUT_SUCCESS);
                 router.push(ROUTE.LOGIN);
                 router.refresh();
@@ -72,9 +80,9 @@ function Navbar({ loggedIn }: { loggedIn: boolean }) {
                                 </Link>
                             </NavigationMenuItem>
 
-                            <NavigationMenuItem>
+                            <NavigationMenuItem >
                                 <NavigationMenuTrigger className='font-normal'>Categories</NavigationMenuTrigger>
-                                <NavigationMenuContent>
+                                <NavigationMenuContent >
                                     <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 ">
                                         {categories.map((category) => (
                                             <li key={category.title}>
@@ -98,7 +106,7 @@ function Navbar({ loggedIn }: { loggedIn: boolean }) {
                     </NavigationMenu>
                 </div>
                 <div className='flex gap-4 '>
-                    <form onSubmit={handleSearch} className="relative flex-1 max-w-lg ml-auto hidden md:flex  w-[300px]">
+                    {/* <form onSubmit={handleSearch} className="relative flex-1 max-w-lg ml-auto hidden md:flex  w-[300px]">
                         <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                         <Input
                             type="search"
@@ -107,7 +115,8 @@ function Navbar({ loggedIn }: { loggedIn: boolean }) {
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                         />
-                    </form>
+                    </form> */}
+
                     <div className='flex item-center gap-2'>
                         <Button variant="ghost" size="icon" className="relative">
                             <ShoppingCart className="h-5 w-5" />
@@ -116,36 +125,37 @@ function Navbar({ loggedIn }: { loggedIn: boolean }) {
 
                         <div className="hidden sm:block border-l h-6 mx-2" />
 
-                        {/* hide if not loggin/ */}
-                        {loggedIn ? (
-                            <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                    <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                                        <Avatar className="h-8 w-8">
-                                            <AvatarFallback> P</AvatarFallback>
-                                        </Avatar>
-                                    </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent className="w-56" align="end" forceMount>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                                    <Avatar className="h-8 w-8">
+                                        <AvatarImage src={user.image} alt={user.firstName} />
+                                        <AvatarFallback>{user.firstName?.charAt(0) || user.username?.charAt(0) || 'P'}</AvatarFallback>
 
-                                    <DropdownMenuItem asChild>
-                                        <Link href="/profile">
-                                            <User className="mr-2 h-4 w-4" />
-                                            <span>Profile</span>
-                                        </Link>
-                                    </DropdownMenuItem>
-                                    <DropdownMenuSeparator />
-                                    <DropdownMenuItem onClick={logout}>
-                                        <LogOut className="mr-2 h-4 w-4" />
-                                        <span>Log out</span>
-                                    </DropdownMenuItem>
-                                </DropdownMenuContent>
-                            </DropdownMenu>
-                        ) : (
-                            <Button variant="default" className='' size="sm" asChild>
-                                <Link href={ROUTE.LOGIN}>Login</Link>
-                            </Button>
-                        )}
+                                    </Avatar>
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className="w-56" align="end" forceMount>
+                                <DropdownMenuLabel className="font-normal">
+                                    <div className="flex flex-col space-y-1">
+                                        <p className="text-sm font-medium leading-none">{user.firstName} {user.lastName}</p>
+                                        <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
+                                    </div>
+                                </DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem asChild>
+                                    <Link href="/profile">
+                                        <User className="mr-2 h-4 w-4" />
+                                        <span>Profile</span>
+                                    </Link>
+                                </DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem onClick={logout}>
+                                    <LogOut className="mr-2 h-4 w-4" />
+                                    <span>Log out</span>
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
                     </div>
                 </div>
             </div>

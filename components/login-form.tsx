@@ -20,6 +20,8 @@ import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import logo from "@/public/logo.png"
 import { ROUTE } from "@/app/util/pageRoutes"
+import { useDispatch } from "react-redux"
+import { login } from "@/app/store/userSlice"
 
 export function LoginForm({
   className,
@@ -30,6 +32,7 @@ export function LoginForm({
   const [usernameError, setUsernameError] = useState("")
   const [passwordError, setPasswordError] = useState("")
   const router = useRouter()
+  const dispatch = useDispatch()
 
   const usernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
@@ -78,6 +81,8 @@ export function LoginForm({
     const data = await response.json()
 
     if (response.ok) {
+      const { accessToken, refreshToken, ...userData } = data;
+      dispatch(login(userData))
       toast.success(data.message || SUCCESS_MESSAGE.LOGIN_SUCCESS)
       router.push(ROUTE.HOME)
     } else {
