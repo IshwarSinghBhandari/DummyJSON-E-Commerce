@@ -3,18 +3,9 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from './ui/navigation-menu'
-import { Search, ShoppingCart } from 'lucide-react';
-import { Input } from './ui/input';
-import React from 'react';
+import { ShoppingCart } from 'lucide-react';
 import { Button } from './ui/button';
 import logo from "@/public/logo.png"
-
-const categories = [
-    { title: "Electronics", href: "/categories/electronics", description: "Gadgets, laptops, and more." },
-    { title: "Clothing", href: "/categories/clothing", description: "Trendy outfits for everyone." },
-    { title: "Home & Garden", href: "/categories/home", description: "Decor and outdoor essentials." },
-];
-
 import { ROUTE } from '@/app/util/pageRoutes';
 import {
     DropdownMenu,
@@ -30,37 +21,19 @@ import {
     AvatarImage,
 } from "@/components/ui/avatar"
 import { LogOut, User } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { SUCCESS_MESSAGE } from '@/app/util/constant';
-import { toast } from 'sonner';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from '@/app/store';
-import { logout as logoutAction } from '@/app/store/userSlice';
+import { useLogout } from '@/app/util/service/logoutAPI';
 
+const categories = [
+    { title: "Electronics", href: "/categories/electronics", description: "Gadgets, laptops, and more." },
+    { title: "Clothing", href: "/categories/clothing", description: "Trendy outfits for everyone." },
+    { title: "Home & Garden", href: "/categories/home", description: "Decor and outdoor essentials." },
+];
 
 function Navbar() {
-    // const [search, setSearch] = React.useState("");
-    const router = useRouter();
-    const dispatch = useDispatch();
+    const logout = useLogout();
     const user = useSelector((state: RootState) => state.user);
-    // const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
-    //     e.preventDefault()
-    //     console.log("search ", search)
-    // }
-
-    const logout = async () => {
-        try {
-            const response = await fetch(ROUTE.API.LOGOUT, { method: 'POST' });
-            if (response.ok) {
-                dispatch(logoutAction());
-                toast.success(SUCCESS_MESSAGE.LOGOUT_SUCCESS);
-                router.push(ROUTE.LOGIN);
-                router.refresh();
-            }
-        } catch (error) {
-            console.error("Logout failed", error);
-        }
-    }
 
     return (
         <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur ">
