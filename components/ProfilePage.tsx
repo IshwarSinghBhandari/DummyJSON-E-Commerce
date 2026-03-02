@@ -1,6 +1,5 @@
 "use client"
 
-import { useEffect, useState } from "react";
 import { useLogout } from "@/app/util/service/logoutAPI";
 import {
     Card,
@@ -14,28 +13,13 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ERROR_MESSAGE } from "@/app/util/constant";
 import { LogOut } from "lucide-react";
-import { ROUTE } from "@/app/util/pageRoutes";
+import { User } from "@/app/types/home";
 
-function ProfilePage() {
+
+
+function ProfilePage({ user }: { user: User | null }) {
     const logout = useLogout();
-    const [user, setUser] = useState<any>(null);
-    useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const response = await fetch(ROUTE.API.USER);
-                if (response.ok) {
-                    const data = await response.json();
-                    setUser(data);
-                }
-            } catch (error) {
-                console.error(ERROR_MESSAGE.FAILED_TO_FETCH_USER, error);
-            }
-        };
-
-        fetchUser();
-    }, []);
 
     if (!user) return (
         <div className="flex items-center justify-center min-h-[75vh] p-4">
