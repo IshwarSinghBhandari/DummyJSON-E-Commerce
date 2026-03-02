@@ -6,7 +6,6 @@ import { ArrowDown, Package } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 import { Product, DataType } from '@/app/types/product';
-import { Category } from '@/app/types/category';
 import ProductCard from '@/components/common/ProductCard';
 import { LIMIT } from '@/app/util/constant';
 import { ROUTE } from '@/app/util/pageRoutes';
@@ -14,10 +13,9 @@ import ProductPagination from './ProductPagination';
 import ProductHeader from './ProductHeader';
 import ProductSkeleton from '@/components/common/ProductSkeleton';
 
-function ProductPage() {
+function ProductPage({ categories }: { categories: [string] }) {
     const router = useRouter();
     const [products, setProducts] = useState<Product[]>([]);
-    const [categories, setCategories] = useState<Category[]>([]);
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState('');
     const [debounceSearch, setDebounceSearch] = useState('');
@@ -26,23 +24,6 @@ function ProductPage() {
     const [total, setTotal] = useState(0);
     const [sortBy, setSortBy] = useState('');
     const [order, setOrder] = useState<'asc' | 'desc'>('asc');
-
-    const fetchCategories = async () => {
-        try {
-            const response = await fetch(ROUTE.API.CATEGORIES);
-            if (response.ok) {
-                const data = await response.json();
-                const normalized = data.map((cat: any) =>
-                    typeof cat === 'string'
-                        ? { slug: cat, name: cat.replace('-', ' '), url: '' }
-                        : cat
-                );
-                setCategories(normalized);
-            }
-        } catch (error) {
-            console.error('Failed to fetch categories:', error);
-        }
-    };
 
     const fetchProducts = useCallback(async () => {
         setLoading(true);
@@ -71,11 +52,8 @@ function ProductPage() {
         }
     }, [debounceSearch, selectedCategory, skip, sortBy, order]);
 
-    useEffect(() => {
-        fetchCategories();
-    }, []);
 
-// debounce when user search something ------------
+    // debounce when user search something ------------
     useEffect(() => {
         const debounceTimer = setTimeout(() => setDebounceSearch(search), 500);
         return () => clearTimeout(debounceTimer);

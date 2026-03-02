@@ -30,7 +30,7 @@ const ProductHeader: React.FC<ProductHeaderTypes> = ({
 
     return (
         <div className="flex flex-col gap-6 md:gap-10">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+            <div className="flex flex-col md:items-start lg:flex-row justify-between items-start lg:items-end gap-6">
                 <div className="space-y-3">
                     <h1 className="text-3xl md:text-4xl text-gray-700 font-black ">
                         Demo Cart Collection
@@ -79,7 +79,7 @@ const ProductHeader: React.FC<ProductHeaderTypes> = ({
                         </DropdownMenu>
                     </div>
 
-                    <div className="relative w-full md:w-[400px] group">
+                    <div className="relative w-full md:max-w-[400px] group">
                         <Search className="absolute left-4 top-[12px] z-10 text-gray-600" />
                         <Input
                             placeholder="Search products. "
