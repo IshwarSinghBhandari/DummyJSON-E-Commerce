@@ -1,99 +1,166 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js 16 E-commerce Application
+
+This project is a Next.js 16 e-commerce application built using the App Router.
+It integrates with the DummyJSON API and demonstrates authentication, server-side rendering, protected routes, state management, and API handling using route handlers.
+
+The application follows the constraints provided in the assignment:
+- TypeScript everywhere
+- SSR for data fetching
+- App Router only
+- API integration through /app/api/*
+- Secure token handling using httpOnly cookies
+- No secrets exposed to the client
+
+------------------------------------------------------------
+
+## Tech Stack
+
+- Next.js 16 (App Router)
+- React 19
+- TypeScript
+- Redux Toolkit + redux-persist
+- Tailwind CSS
+- shadcn/ui
+
+------------------------------------------------------------
+
+## Features Implemented
+
+Authentication
+- Login form with validation
+- POST /api/auth/login forwards request to DummyJSON
+- accessToken and refreshToken stored in httpOnly secure cookies
+- GET /api/auth/user fetches current user from token
+- Logout clears cookies
+- Protected routes using middleware
+- Auto redirect:
+  - Logged in users → products page
+  - Logged out users → login page
+
+Products
+- Server-side product fetching using async server components (SSR)
+- Server-side category fetching
+- Filtering by category
+- Search via API
+- Sorting via API
+- Pagination using limit and skip
+- Product details page (dynamic route)
+
+Cart
+- Add to cart using Redux Toolkit
+- Persistent cart using redux-persist
+- Update quantity
+- Remove item
+- Dedicated cart page
+
+UI
+- Fully responsive layout
+- Loading states
+- Error handling for API failures
+
+------------------------------------------------------------
+
+## API Architecture
+
+All external API calls are proxied through Next.js route handlers under:
+
+/app/api/
+
+This ensures:
+- Tokens are never exposed to the client
+- Backend URL is hidden
+- Centralized error handling
+
+Routes implemented:
+- /api/auth/login
+- /api/auth/logout
+- /api/auth/user
+- /api/products
+- /api/products/[id]
+- /api/categories
+
+------------------------------------------------------------
+
+## Server-Side Rendering
+
+Products and categories are fetched on the server using async server components.
+
+Example pattern:
+
+export default async function Page() {
+  const res = await fetch(..., { cache: "no-store" })
+}
+
+This ensures:
+- SEO-friendly rendering
+- Faster initial load
+- No sensitive data exposed to client
+
+------------------------------------------------------------
+
+## Middleware Protection
+
+Protected routes are handled using middleware.ts.
+
+- If token is missing → redirect to /login
+- If token exists → allow access
+- Logged in users are redirected away from login page
+
+------------------------------------------------------------
+
+## State Management
+
+Redux Toolkit is used for:
+- Cart state
+- Persisted cart across refresh
+
+Authentication state is derived from secure cookies via server calls.
+
+------------------------------------------------------------
 
 ## Getting Started
 
-First, run the development server:
+1. Install dependencies
 
-```bash
+npm install
+
+2. Create .env file in project root
+
+BACKEND_BASE_URL=https://dummyjson.com
+
+
+3. Run development server
+
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Application runs on:
+http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+------------------------------------------------------------
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Scripts
 
-## Learn More
+npm run dev     - Start development server  
+npm run build   - Build for production  
+npm run start   - Start production server  
+npm run lint    - Run linter  
 
-To learn more about Next.js, take a look at the following resources:
+------------------------------------------------------------
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deployment
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The application can be deployed on:
+- Vercel
+- Netlify
 
-## Deploy on Vercel
+Make sure environment variables are configured in the hosting platform.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+------------------------------------------------------------
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Notes
 
-
-
-app/
-│
-├── layout.tsx                     (Root layout – shared layout, metadata, SEO)
-├── globals.css                    (Global styles)
-│
-├── middleware.ts                  (Protect routes + auto redirect logic)
-│
-├── login/
-│   ├── page.tsx                   (Login page UI – client component for form)
-│   └── loading.tsx                (Login loading state)
-│
-├── products/
-│   ├── page.tsx                   (SSR product listing page)
-│   ├── loading.tsx                (Loading state for SSR)
-│   ├── error.tsx                  (Error boundary for product fetch)
-│   └── [id]/
-│       └── page.tsx               (SSR product detail page)
-│
-├── cart/
-│   └── page.tsx                   (Shopping cart page – client component)
-│
-├── api/                           (🚨 Your backend layer – required)
-│   ├── auth/
-│   │   ├── login/
-│   │   │   └── route.ts           (POST – call dummyjson login + set cookies)
-│   │   ├── refresh/
-│   │   │   └── route.ts           (POST – refresh tokens + update cookies)
-│   │   ├── me/
-│   │   │   └── route.ts           (GET – get logged in user using access token)
-│   │   └── logout/
-│   │       └── route.ts           (POST – clear cookies)
-│   │
-│   ├── products/
-│   │   ├── route.ts               (GET – products list with pagination/sort)
-│   │   ├── categories/
-│   │   │   └── route.ts           (GET – product categories)
-│   │   └── [id]/
-│   │       └── route.ts           (GET – product by ID)
-│
-├── components/
-│   ├── ProductCard.tsx            (Reusable product card UI)
-│   ├── Navbar.tsx                 (Navigation bar with logout/cart count)
-│   ├── Pagination.tsx             (Pagination component)
-│   ├── CategoryFilter.tsx         (Category filter component)
-│   └── SortDropdown.tsx           (Sorting component)
-│
-├── store/
-│   └── cartStore.ts               (Redux Toolkit or Context – cart state)
-│
-├── lib/
-│   ├── auth.ts                    (Helper: token validation / cookie utils)
-│   ├── fetcher.ts                 (Reusable server fetch wrapper)
-│   └── types.ts                   (TypeScript interfaces for products/user)
-│
-├── tests/
-│   ├── login.test.tsx             (Login form tests)
-│   ├── cart.test.ts               (Cart reducer tests)
-│   └── products.test.ts           (Product page tests)
-│
-.env                                (Environment variables)
+- TypeScript is used across the project.
+- SSR is used where required.
+- Client components are only used when necessary (cart, UI interactivity).
+- No secrets are exposed to the client.
+- All API calls are routed through Next.js route handlers.
