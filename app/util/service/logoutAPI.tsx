@@ -6,7 +6,7 @@ import { SUCCESS_MESSAGE } from '@/app/util/constant';
 import { ROUTE } from '@/app/util/pageRoutes';
 import { toast } from 'sonner';
 
-export const useLogout = () => {
+export  function useLogout ()  {
     const router = useRouter();
     const dispatch = useDispatch();
 

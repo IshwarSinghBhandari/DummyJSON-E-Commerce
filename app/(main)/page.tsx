@@ -9,7 +9,6 @@ const fetchCategories = async () => {
     );
 
     if (!response.ok) return [];
-
     const data = await response.json();
 
 
@@ -31,7 +30,7 @@ export default async function Home({
     limit: "12",
     skip: paramsData?.skip || "0",
   });
-  if (paramsData?.search) params.append("search", paramsData.search); 
+  if (paramsData?.search) params.append("searchData", paramsData.search); 
   if (paramsData?.category) params.append("category", paramsData.category);
   if (paramsData?.sortBy) params.append("sortBy", paramsData.sortBy);
   if (paramsData?.order) params.append("order", paramsData.order);

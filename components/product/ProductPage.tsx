@@ -20,7 +20,7 @@ function ProductPage({
     category: string[];
     products: Product[];
     total: number;
-    searchParams: any; 
+    searchParams:any;
 }) {
 
     // console.log("catwgory",category)
@@ -82,6 +82,7 @@ const skip = Number(params.get("skip")) || 0;
 
         const timeout = setTimeout(() => {
 
+            
             const params = new URLSearchParams(window.location.search);
             if (searchValue) params.set("search", searchValue);
             else params.delete("search");
