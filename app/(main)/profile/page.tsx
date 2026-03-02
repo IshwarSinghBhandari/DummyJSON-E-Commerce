@@ -5,7 +5,7 @@ import { headers } from 'next/headers';
 
 const fetchUser = async () => {
     try {
-        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || `https://dummy-json-e-commerce.vercel.app`;
+        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || `https://dummy-json-e-commerce.vercel.app-test`;
 
         const endpoint = `${baseUrl}${ROUTE.API.USER}`;
         
