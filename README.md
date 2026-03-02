@@ -127,7 +127,7 @@ npm install
 2. Create .env file in project root
 
 BACKEND_BASE_URL=https://dummyjson.com
-NEXT_PUBLIC_BASE_URL=http://localhost:3000/
+
 
 3. Run development server
 
