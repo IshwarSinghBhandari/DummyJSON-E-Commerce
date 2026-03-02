@@ -1,16 +1,21 @@
 import { ERROR_MESSAGE } from '@/app/util/constant';
 import { ROUTE } from '@/app/util/pageRoutes';
 import ProfilePage from '@/components/ProfilePage';
+import { headers } from 'next/headers';
 
 const fetchUser = async () => {
     try {
-        const response = await fetch(ROUTE.API.USER, { cache: 'no-store' });
+        const headersList = await headers();
+        const cookieHeader = headersList.get('cookie') || '';
 
-        if (!response.ok) {
-            throw new Error('Failed to fetch user');
-        }
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${ROUTE.API.USER}`, { 
+            cache: 'no-store',
+            headers: {
+                cookie: cookieHeader,
+            }
+        });
 
-        
+
         const data = await response.json();
         return data;
     } catch (error) {

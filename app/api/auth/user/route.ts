@@ -7,6 +7,7 @@ export async function GET() {
     try {
         const cookieData = await cookies();
         const token = cookieData.get(COOKIE_NAME.ACCESS_TOKEN)?.value;
+        console.log("Access token from cookies:", token);
         if (!token) {
             return NextResponse.json({ error: ERROR_MESSAGE.UNAUTHORIZED }, { status: 401 });
         }
@@ -45,7 +46,7 @@ export async function GET() {
         const data = await response.json();
         return NextResponse.json(data);
     } catch (e) {
-        console.error(e);
+        console.error("Error fetching user data:", e);
         return NextResponse.json({ error: ERROR_MESSAGE.SOMETHING_WENT_WRONG },
             { status: 500 });
     }
