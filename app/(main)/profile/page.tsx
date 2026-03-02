@@ -10,9 +10,9 @@ const fetchUser = async () => {
 
         const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${ROUTE.API.USER}`, { 
             cache: 'no-store',
-            headers: {
-                cookie: cookieHeader,
-            }
+            // headers: {
+            //     cookie: cookieHeader,
+            // }
         });
 
 
