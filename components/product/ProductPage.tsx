@@ -20,6 +20,7 @@ function ProductPage() {
     const [categories, setCategories] = useState<Category[]>([]);
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState('');
+    const [debounceSearch, setDebounceSearch] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('all');
     const [skip, setSkip] = useState(0);
     const [total, setTotal] = useState(0);
@@ -51,7 +52,7 @@ function ProductPage() {
                 skip: skip.toString(),
             });
 
-            if (search) params.append('searchData', search);
+            if (debounceSearch) params.append('searchData', debounceSearch);
             if (selectedCategory && selectedCategory !== 'all') params.append('category', selectedCategory);
             if (sortBy) {
                 params.append('sortBy', sortBy);
@@ -68,19 +69,22 @@ function ProductPage() {
         } finally {
             setLoading(false);
         }
-    }, [search, selectedCategory, skip, sortBy, order]);
+    }, [debounceSearch, selectedCategory, skip, sortBy, order]);
 
     useEffect(() => {
         fetchCategories();
     }, []);
 
+// debounce when user search something ------------
     useEffect(() => {
-        const debounceTimer = setTimeout(() => {
-            fetchProducts();
-        }, 500);
-
+        const debounceTimer = setTimeout(() => setDebounceSearch(search), 500);
         return () => clearTimeout(debounceTimer);
-    }, [fetchProducts]);
+    }, [search]);
+
+    useEffect(() => {
+        if (search !== debounceSearch) return;
+        fetchProducts();
+    }, [fetchProducts, search, debounceSearch]);
 
     const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearch(e.target.value);
@@ -160,7 +164,7 @@ function ProductPage() {
                         </div>
                     )}
                 </div>
-                pagination part
+                {/* pagination part ------------------- */}
                 <ProductPagination
                     total={total}
                     limit={LIMIT}
