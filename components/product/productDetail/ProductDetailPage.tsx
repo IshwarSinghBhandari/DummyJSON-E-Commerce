@@ -17,53 +17,27 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { ProductDetail } from "@/app/types/product";
+import {  ProductDetailPageProps } from "@/app/types/product";
 import InfoRow from "./InfoRow";
 import ReviewCard from "./ReviewCard";
 import DetailSkeleton from "./DetailSkeleton";
 import ImageGallery from "./ImageGallery";
-import { ROUTE } from "@/app/util/pageRoutes";
 import { useCart } from "@/app/util/useCart";
 
 
-
-export default function ProductDetailPage({ id }: { id: string }) {
+export default function ProductDetailPage({ product, error }: ProductDetailPageProps) {
     const router = useRouter();
     const cart = useCart();
-    const [product, setProduct] = useState<ProductDetail | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-
-    useEffect(() => {
-        const fetchProduct = async () => {
-            setLoading(true);
-            setError(null);
-            try {
-                const res = await fetch(`${ROUTE.API.PRODUCTS}/${id}`);
-                if (!res.ok) {
-                    const data = await res.json();
-                    throw new Error(data.error || "Failed to fetch product");
-                }
-                const data: ProductDetail = await res.json();
-                setProduct(data);
-            } catch (err: any) {
-                setError(err.message ?? "Something went wrong");
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchProduct();
-    }, [id]);
 
     // during loading show skeleton-----------------
-    if (loading) return <DetailSkeleton />;
+    if (product === undefined) return <DetailSkeleton />;
 
     if (error || !product) {
         return (
             <div className="min-h-screen flex flex-col items-center justify-center gap-4 py-24">
                 <AlertCircle className="h-12 w-12 text-destructive" />
                 <h2 className="text-xl font-semibold">Product not found</h2>
-                <p className="text-gray-600">{error}</p>
+                <p className="text-gray-600">{error ?? "Something went wrong"}</p>
                 <Button variant="outline" onClick={() => router.back()}>
                     <ArrowLeft className="h-4 w-4 mr-2" />
                     Go Back

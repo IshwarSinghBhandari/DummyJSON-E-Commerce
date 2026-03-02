@@ -91,3 +91,8 @@ export interface ImageGallerytype {
     images: string[];
     title: string;
 }
+
+export type ProductDetailPageProps = {
+    product?: ProductDetail | null;
+    error?: string | null;
+};
