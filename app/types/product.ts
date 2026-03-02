@@ -63,7 +63,7 @@ export interface ProductPagination {
     onPageChange: (newSkip: number) => void;
 }
 
-export interface ProductHeader {
+export interface ProductHeaderTypes {
     categories: any[];
     selectedCategory: string;
     onCategoryChange: (slug: string) => void;

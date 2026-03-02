@@ -35,7 +35,7 @@ function Navbar() {
     return (
         <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur ">
             <div className="md:px-[8%] mx-auto flex h-16 items-center px-4 justify-between gap-4">
-                <div className="hidden lg:flex items-center space-x-4 gap-4">
+                <div className="flex items-center space-x-4 gap-4">
 
                     <Link href={ROUTE.HOME} className='flex items-center space-x-2 mr-4'>
                         <Image src={logo} alt="logo" width="82" height="82" />

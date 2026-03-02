@@ -4,7 +4,7 @@ import React from 'react';
 import { Search, ArrowUpDown, Check } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import CategoryFilter from './CategoryFilter';
-import { ProductHeader } from '@/app/types/product';
+import { ProductHeaderTypes } from '@/app/types/product';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -16,7 +16,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { SORT_OPTIONS } from '@/app/util/constant';
 
-const ProductHeader: React.FC<ProductHeader> = ({
+const ProductHeader: React.FC<ProductHeaderTypes> = ({
     categories,
     selectedCategory,
     onCategoryChange,
@@ -29,10 +29,10 @@ const ProductHeader: React.FC<ProductHeader> = ({
     const sortLabel = SORT_OPTIONS.find(opt => opt.value === sortBy && opt.order === order)?.label || 'Sort By';
 
     return (
-        <div className="flex flex-col gap-10">
+        <div className="flex flex-col gap-6 md:gap-10">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
                 <div className="space-y-3">
-                    <h1 className="text-4xl text-gray-700 font-black ">
+                    <h1 className="text-3xl md:text-4xl text-gray-700 font-black ">
                         Demo Cart Collection
                     </h1>
                     <p className="text-gray-500 text-lg max-w-md font-medium ">
@@ -40,8 +40,8 @@ const ProductHeader: React.FC<ProductHeader> = ({
                     </p>
                 </div>
 
-                <div className="flex items-center gap-3 flex-wrap w-full md:w-auto">
-                    <div className="flex items-center gap-3 w-full md:w-auto">
+                <div className="flex flex-col sm:flex-row  sm:items-center gap-3 w-full md:w-auto">
+                    <div className="flex flex-col sm:flex-row  sm:items-center gap-3 w-full md:w-auto">
                         <CategoryFilter
                             categories={categories}
                             selectedCategory={selectedCategory}
@@ -59,7 +59,7 @@ const ProductHeader: React.FC<ProductHeader> = ({
                                 </Button>
                             </DropdownMenuTrigger>
 
-                            <DropdownMenuContent className="w-56 rounded-[8px] p-2">
+                            <DropdownMenuContent className="w-full md:w-56 max-w-[90vw] rounded-[8px] p-2">
                                 <DropdownMenuLabel className="font-bold text-xs uppercase tracking-[2px] opacity-50 px-2 py-3">
                                     Sort Options
                                 </DropdownMenuLabel>
@@ -79,7 +79,7 @@ const ProductHeader: React.FC<ProductHeader> = ({
                         </DropdownMenu>
                     </div>
 
-                    <div className="relative flex-1 md:w-[400px] group">
+                    <div className="relative w-full md:w-[400px] group">
                         <Search className="absolute left-4 top-[12px] z-10 text-gray-600" />
                         <Input
                             placeholder="Search products. "
