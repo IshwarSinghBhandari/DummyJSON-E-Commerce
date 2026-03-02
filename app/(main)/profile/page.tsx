@@ -9,7 +9,7 @@ const fetchUser = async () => {
 
         const endpoint = `${baseUrl}${ROUTE.API.USER}`;
         
-        console.log("Fetching from URL:", endpoint);
+        // console.log("Fetching from URL:", endpoint);
 
         const headersList = await headers();
         const cookieHeader = headersList.get('cookie') || '';
