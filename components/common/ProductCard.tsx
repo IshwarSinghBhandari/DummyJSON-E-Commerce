@@ -4,10 +4,11 @@ import Image from 'next/image';
 import { Star, ShoppingCart } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ProductCard } from '@/app/types/product';
+import { ProductCard as ProductCardType } from '@/app/types/product';
+import { useCart } from '@/app/util/useCart';
 
-
-const ProductCard = ({ product, onClick, onCartClick }: ProductCard) => {
+const ProductCard = ({ product, onClick }: ProductCardType) => {
+    const cart = useCart();
     return (
 
         <Card
@@ -62,7 +63,12 @@ const ProductCard = ({ product, onClick, onCartClick }: ProductCard) => {
                         </span>
                     </div>
 
-                    <Button size="icon" className="cursor-pointer" onClick={onCartClick} variant="default">
+                    <Button size="icon" className="cursor-pointer" onClick={(e) => {
+                        e.stopPropagation();
+                        cart.add(product);
+                    }} variant="default">
+
+
                         <ShoppingCart className="h-5 w-5" />
                     </Button>
                 </div>

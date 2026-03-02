@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from './ui/navigation-menu'
+// import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from './ui/navigation-menu'
 import { ShoppingCart } from 'lucide-react';
 import { Button } from './ui/button';
 import logo from "@/public/logo.png"
@@ -24,16 +24,13 @@ import { LogOut, User } from 'lucide-react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/app/store';
 import { useLogout } from '@/app/util/service/logoutAPI';
+import { useCart } from '@/app/util/useCart';
 
-const categories = [
-    { title: "Electronics", href: "/categories/electronics", description: "Gadgets, laptops, and more." },
-    { title: "Clothing", href: "/categories/clothing", description: "Trendy outfits for everyone." },
-    { title: "Home & Garden", href: "/categories/home", description: "Decor and outdoor essentials." },
-];
 
 function Navbar() {
     const logout = useLogout();
     const user = useSelector((state: RootState) => state.user);
+    const cart = useCart();
 
     return (
         <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur ">
@@ -43,15 +40,15 @@ function Navbar() {
                     <Link href={ROUTE.HOME} className='flex items-center space-x-2 mr-4'>
                         <Image src={logo} alt="logo" width="82" height="82" />
                     </Link>
-                    <NavigationMenu>
+                    {/* <NavigationMenu>
                         <NavigationMenuList>
-                            {/* <NavigationMenuItem>
+                            <NavigationMenuItem>
                                 <Link href={ROUTE.PRODUCTS} >
                                     <NavigationMenuLink className="font-normal">
                                         All Products
                                     </NavigationMenuLink>
                                 </Link>
-                            </NavigationMenuItem> */}
+                            </NavigationMenuItem>
 
                             <NavigationMenuItem >
                                 <NavigationMenuTrigger className='font-normal'>Categories</NavigationMenuTrigger>
@@ -76,7 +73,7 @@ function Navbar() {
                                 </NavigationMenuContent>
                             </NavigationMenuItem>
                         </NavigationMenuList>
-                    </NavigationMenu>
+                    </NavigationMenu> */}
                 </div>
                 <div className='flex gap-4 '>
                     {/* <form onSubmit={handleSearch} className="relative flex-1 max-w-lg ml-auto hidden md:flex  w-[300px]">
@@ -91,9 +88,15 @@ function Navbar() {
                     </form> */}
 
                     <div className='flex item-center gap-2'>
-                        <Button variant="ghost" size="icon" className="relative">
-                            <ShoppingCart className="h-5 w-5" />
-                            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                        <Button variant="ghost" size="icon" className="relative cursor-pointer" asChild>
+                            <Link href={ROUTE.CART}>
+                                <ShoppingCart className="h-5 w-5" />
+                                {cart.totalItem > 0 && (
+                                    <span className="absolute -top-1 -right-1 bg-green-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                                        {cart.totalItem}
+                                    </span>
+                                )}
+                            </Link>
                         </Button>
 
                         <div className="hidden sm:block border-l h-6 mx-2" />

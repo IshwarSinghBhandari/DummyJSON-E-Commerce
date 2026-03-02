@@ -8,3 +8,4 @@ export interface UserTypes {
     image: string;
     loggedIn: boolean;
 }
+

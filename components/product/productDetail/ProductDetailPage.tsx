@@ -23,11 +23,13 @@ import ReviewCard from "./ReviewCard";
 import DetailSkeleton from "./DetailSkeleton";
 import ImageGallery from "./ImageGallery";
 import { ROUTE } from "@/app/util/pageRoutes";
+import { useCart } from "@/app/util/useCart";
 
 
 
 export default function ProductDetailPage({ id }: { id: string }) {
     const router = useRouter();
+    const cart = useCart();
     const [product, setProduct] = useState<ProductDetail | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -53,6 +55,7 @@ export default function ProductDetailPage({ id }: { id: string }) {
         fetchProduct();
     }, [id]);
 
+    // during loading show skeleton-----------------
     if (loading) return <DetailSkeleton />;
 
     if (error || !product) {
@@ -92,8 +95,10 @@ export default function ProductDetailPage({ id }: { id: string }) {
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
 
+                    {/* show image crousal and bottom image to click----------------- */}
                     <ImageGallery images={allImages} title={product.title} />
 
+                    {/* item details part----------------------- */}
                     <div className="space-y-6">
                         <div className="flex flex-wrap gap-2 items-center">
                             <Badge variant="secondary" className="capitalize text-xs">
@@ -149,17 +154,20 @@ export default function ProductDetailPage({ id }: { id: string }) {
 
                         <p className="text-gray-600 leading-relaxed">{product.description}</p>
 
+                        {/* add to cart button--------- */}
                         <div className="flex gap-3 pt-2">
                             <Button
                                 size="lg"
                                 className="gap-2 flex-1 sm:flex-none"
                                 disabled={product.stock === 0}
+                                onClick={() => cart.add(product)}
                             >
 
                                 <ShoppingCart className="h-5 w-5" />
                                 {product.stock === 0 ? "Out of Stock" : "Add to Cart"}
                             </Button>
 
+                            {/* on click it seds to back ------------------- previous page------ */}
                             <Button size="lg" variant="outline" onClick={() => router.back()} className="flex-1 sm:flex-none">
                                 Continue Shopping
                             </Button>
@@ -193,7 +201,7 @@ export default function ProductDetailPage({ id }: { id: string }) {
                     </div>
                 </div>
 
-                {/* reviews part */}
+                {/* reviews part from users-------- */}
                 {product.reviews && product.reviews.length > 0 && (
                     <div className="space-y-6">
                         <Separator />

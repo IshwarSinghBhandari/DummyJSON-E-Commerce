@@ -57,7 +57,6 @@ function ProductPage() {
                 params.append('sortBy', sortBy);
                 params.append('order', order);
             }
-
             const response = await fetch(`${ROUTE.API.PRODUCTS}?${params.toString()}`);
             if (response.ok) {
                 const data: DataType = await response.json();
@@ -88,12 +87,10 @@ function ProductPage() {
         setSelectedCategory('all');
         setSkip(0);
     };
-
     const onCategoryChange = (category: string) => {
         setSelectedCategory(category);
         setSkip(0);
     };
-
     const onPageChange = (newSkip: number) => {
         setSkip(newSkip);
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -106,10 +103,10 @@ function ProductPage() {
     };
 
 
-
     return (
         <div className="min-h-screen">
             <div className="mx-auto  py-12  space-y-12 animate-in fade-in duration-1000">
+                {/* header for filter search and other ----------------- */}
                 <ProductHeader
                     categories={categories}
                     selectedCategory={selectedCategory}
@@ -123,16 +120,19 @@ function ProductPage() {
 
                 <div className="relative">
 
-
+                    {/* during loading show skeleton----------------- */}
                     {loading ? (
                         <ProductSkeleton />
                     ) : products.length > 0 ? (
                         <div className="grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                            {/* product cards-------- */}
                             {products.map((product) => (
-                                <ProductCard key={product.id} product={product} onClick={() => router.push(`/${product.id}`)} onCartClick={() => { }} />
+                                <ProductCard key={product.id} product={product} onClick={() => router.push(`/${product.id}`)} />
                             ))}
                         </div>
                     ) : (
+
+                        // if not product then show this ----------------------------------
                         <div className="flex flex-col items-center justify-center py-24 px-6 text-center border rounded-[8px]">
 
                             <Package className="h-12 w-12 text-gray-500 mb-4" />
@@ -160,7 +160,7 @@ function ProductPage() {
                         </div>
                     )}
                 </div>
-
+                pagination part
                 <ProductPagination
                     total={total}
                     limit={LIMIT}

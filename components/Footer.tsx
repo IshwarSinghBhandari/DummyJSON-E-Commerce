@@ -107,7 +107,7 @@ const Footer = () => {
                       href="tel:+01051923556"
                       className="text-base font-normal text-muted-foreground hover:text-foreground"
                     >
-                      9760027295
+                      9768017195
                     </a>
                   </li>
                 </ul>
