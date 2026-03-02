@@ -70,7 +70,7 @@ export interface ProductHeaderTypes {
     search: string;
     onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     sortBy: string;
-    order: "asc" | "desc";
+    order: string;
     onSortChange: (sortBy: string, order: "asc" | "desc") => void;
 }
 
