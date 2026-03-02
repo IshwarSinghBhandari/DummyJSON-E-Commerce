@@ -16,6 +16,7 @@ import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ERROR_MESSAGE } from "@/app/util/constant";
 import { LogOut } from "lucide-react";
+import { ROUTE } from "@/app/util/pageRoutes";
 
 function ProfilePage() {
     const logout = useLogout();
@@ -23,7 +24,7 @@ function ProfilePage() {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const response = await fetch("/api/auth/user");
+                const response = await fetch(ROUTE.API.USER);
                 if (response.ok) {
                     const data = await response.json();
                     setUser(data);

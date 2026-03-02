@@ -1,6 +1,5 @@
 "use client";
 
-import React from 'react';
 import Image from 'next/image';
 import { Star, ShoppingCart } from 'lucide-react';
 import { Card } from '@/components/ui/card';
@@ -8,8 +7,9 @@ import { Button } from '@/components/ui/button';
 import { ProductCard } from '@/app/types/product';
 
 
-const ProductCard: React.FC<ProductCard> = ({ product, onClick }) => {
+const ProductCard = ({ product, onClick, onCartClick }: ProductCard) => {
     return (
+
         <Card
             className="flex flex-col cursor-pointer py-0 gap-2 h-full rounded-[8px] border overflow-hidden hover:shadow-md transition"
             onClick={onClick}
@@ -62,7 +62,7 @@ const ProductCard: React.FC<ProductCard> = ({ product, onClick }) => {
                         </span>
                     </div>
 
-                    <Button size="icon" className="cursor-pointer" variant="default">
+                    <Button size="icon" className="cursor-pointer" onClick={onCartClick} variant="default">
                         <ShoppingCart className="h-5 w-5" />
                     </Button>
                 </div>

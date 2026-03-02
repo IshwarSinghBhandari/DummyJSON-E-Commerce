@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import { ArrowDown, Package } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -8,11 +9,13 @@ import { Product, DataType } from '@/app/types/product';
 import { Category } from '@/app/types/category';
 import ProductCard from '@/components/common/ProductCard';
 import { LIMIT } from '@/app/util/constant';
+import { ROUTE } from '@/app/util/pageRoutes';
 import ProductPagination from './ProductPagination';
 import ProductHeader from './ProductHeader';
 import ProductSkeleton from '@/components/common/ProductSkeleton';
 
 function ProductPage() {
+    const router = useRouter();
     const [products, setProducts] = useState<Product[]>([]);
     const [categories, setCategories] = useState<Category[]>([]);
     const [loading, setLoading] = useState(true);
@@ -25,7 +28,7 @@ function ProductPage() {
 
     const fetchCategories = async () => {
         try {
-            const response = await fetch('/api/categories');
+            const response = await fetch(ROUTE.API.CATEGORIES);
             if (response.ok) {
                 const data = await response.json();
                 const normalized = data.map((cat: any) =>
@@ -55,7 +58,7 @@ function ProductPage() {
                 params.append('order', order);
             }
 
-            const response = await fetch(`/api/products?${params.toString()}`);
+            const response = await fetch(`${ROUTE.API.PRODUCTS}?${params.toString()}`);
             if (response.ok) {
                 const data: DataType = await response.json();
                 setProducts(data.products);
@@ -126,7 +129,7 @@ function ProductPage() {
                     ) : products.length > 0 ? (
                         <div className="grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4 gap-8">
                             {products.map((product) => (
-                                <ProductCard key={product.id} product={product} />
+                                <ProductCard key={product.id} product={product} onClick={() => router.push(`/${product.id}`)} onCartClick={() => { }} />
                             ))}
                         </div>
                     ) : (

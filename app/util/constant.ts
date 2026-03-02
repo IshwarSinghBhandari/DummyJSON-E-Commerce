@@ -7,6 +7,8 @@ export const ERROR_MESSAGE = {
     LOGOUT_ERROR: "Error during logout",
     FAILED_TO_FETCH_USER: "Failed to fetch user",
     UNAUTHORIZED: "Unauthorized",
+    INVALID_ID: "Invalid product ID",
+    PRODUCT_NOT_FOUND: "Product not found",
 }
 export const SUCCESS_MESSAGE = {
     LOGIN_SUCCESS: "Login successful",

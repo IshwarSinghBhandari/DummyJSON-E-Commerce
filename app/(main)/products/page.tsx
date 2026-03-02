@@ -3,8 +3,11 @@ import MainBanner from '@/components/homePage/MainBanner'
 function page() {
     return (
         <>
-            <MainBanner />
+            <section className="md:px-[8%] px-4">
 
+                <MainBanner />
+
+            </section>
         </>
     )
 }

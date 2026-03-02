@@ -12,6 +12,37 @@ export interface Product {
     images: string[];
 }
 
+export interface ProductReview {
+    rating: number;
+    comment: string;
+    date: string;
+    reviewerName: string;
+    reviewerEmail: string;
+}
+
+export interface ProductDetail extends Product {
+    sku: string;
+    weight: number;
+    dimensions: {
+        width: number;
+        height: number;
+        depth: number;
+    };
+    warrantyInformation: string;
+    shippingInformation: string;
+    availabilityStatus: string;
+    reviews: ProductReview[];
+    returnPolicy: string;
+    minimumOrderQuantity: number;
+    meta: {
+        createdAt: string;
+        updatedAt: string;
+        barcode: string;
+        qrCode: string;
+    };
+    tags: string[];
+}
+
 export interface DataType {
     products: Product[];
     total: number;
@@ -22,6 +53,7 @@ export interface DataType {
 export interface ProductCard {
     product: Product;
     onClick?: () => void;
+    onCartClick?: () => void;
 }
 
 export interface ProductPagination {
@@ -46,4 +78,16 @@ export interface ProductHeader {
 export interface ProductSkeleton {
     count?: number;
     className?: string;
+}
+
+
+export interface InfoRowProps {
+    icon: React.ReactNode;
+    label: string;
+    value: string;
+}
+
+export interface ImageGallery {
+    images: string[];
+    title: string;
 }

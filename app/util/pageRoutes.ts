@@ -8,6 +8,7 @@ export const ROUTE = {
         LOGIN: "/api/auth/login",
         LOGOUT: "/api/auth/logout",
         PRODUCTS: "/api/products",
+        CATEGORIES: "/api/categories",
         USER: "/api/auth/user",
     }
 }
