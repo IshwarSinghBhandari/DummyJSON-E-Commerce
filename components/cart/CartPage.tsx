@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCart } from '@/app/util/useCart';
@@ -10,9 +10,36 @@ import { Separator } from '@/components/ui/separator';
 import { ROUTE } from '@/app/util/pageRoutes';
 import { SUCCESS_MESSAGE } from '@/app/util/constant';
 import { toast } from 'sonner';
+import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogCancel, AlertDialogAction } from '../ui/alert-dialog';
+
 
 function CartPage() {
   const cart = useCart();
+  const [showDialog, setShowDialog] = useState(false);
+  const [pendingRemoveId, setPendingRemoveId] = useState<number | null>(null);
+  const [dialogMode, setDialogMode] = useState<'single' | 'all' | null>(null);
+
+  const onRemoveClick = (itemId: number) => {
+    if (cart.items.length === 1) {
+      setPendingRemoveId(itemId);
+      setShowDialog(true);
+      setDialogMode('single');
+    } else {
+      cart.remove(itemId);
+    }
+  };
+
+  const confirmLastItemRemove = () => {
+    if (dialogMode === 'single' && pendingRemoveId !== null) {
+      cart.remove(pendingRemoveId);
+    } else if (dialogMode === 'all') {
+      cart.clear();
+    }
+
+    setShowDialog(false);
+    setPendingRemoveId(null);
+    setDialogMode(null);
+  };
 
   if (cart.items.length === 0) {
 
@@ -77,7 +104,15 @@ function CartPage() {
                       variant="ghost"
                       size="icon"
                       className="h-8 w-8 rounded-none"
-                      onClick={() => cart.update(item.id, item.quantity - 1)}
+                      onClick={() => {
+                        if (item.quantity === 1 && cart.totalItem === 1) {
+                          setPendingRemoveId(item.id);
+                          setDialogMode('single');
+                          setShowDialog(true);
+                        }  else {
+                          cart.update(item.id, item.quantity - 1);
+                        }
+                      }}
                     >
                       <Minus className="h-3 w-3" />
                     </Button>
@@ -100,7 +135,7 @@ function CartPage() {
                     variant="ghost"
                     size="sm"
                     className="text-red-500 hover:text-red-600 hover:bg-red-50"
-                    onClick={() => cart.remove(item.id)}
+                    onClick={() => onRemoveClick(item.id)}
                   >
                     <Trash2 className="h-4 w-4 mr-2" />
                     Remove
@@ -112,7 +147,16 @@ function CartPage() {
 
           {/* will remove all the product from cart--------------- */}
           <div className="flex justify-end pt-4">
-            <Button variant="outline" onClick={cart.clear}>
+            <Button
+              variant="outline"
+              onClick={() => {
+                if (cart.totalItem > 0) {
+                  setDialogMode('all');
+                  setPendingRemoveId(null);
+                  setShowDialog(true);
+                }
+              }}
+            >
               Remove All
             </Button>
           </div>
@@ -144,6 +188,26 @@ function CartPage() {
           </Button>
         </div>
       </div>
+
+{/* alert dialog box when remove last item from cart-------------------------- */}
+      <AlertDialog open={showDialog} onOpenChange={setShowDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              Are you sure you want to remove the last item?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              Your cart will be empty.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmLastItemRemove}>
+              Yes, remove it
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

@@ -18,6 +18,7 @@ export const SUCCESS_MESSAGE = {
     LOGOUT_SUCCESS: "Logged out successfully",
     ADD_TO_CART: "Added to cart",
     COMMING_SOON: "Coming soon",
+    REMOVED_FROM_CART: "Removed from cart",
 }
 
 export const COOKIE_NAME = {
