@@ -11,9 +11,9 @@ import {
     type CarouselApi,
 } from "@/components/ui/carousel";
 import { useEffect } from "react";
-import { ImageGallery } from "@/app/types/product";
+import { ImageGallerytype } from "@/app/types/product";
 
-export default function ImageGallery({ images, title }: ImageGallery) {
+export default function ImageGallery({ images, title }: ImageGallerytype) {
     const [api, setApi] = useState<CarouselApi>();
     const [activeIndex, setActiveIndex] = useState(0);
 

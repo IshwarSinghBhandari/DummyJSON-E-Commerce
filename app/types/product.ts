@@ -56,7 +56,7 @@ export interface ProductCard {
     onCartClick?: () => void;
 }
 
-export interface ProductPagination {
+export interface ProductPaginationTypes {
     total: number;
     limit: number;
     skip: number;
@@ -75,7 +75,7 @@ export interface ProductHeaderTypes {
 }
 
 
-export interface ProductSkeleton {
+export interface ProductSkeletonTypes {
     count?: number;
     className?: string;
 }
@@ -87,7 +87,7 @@ export interface InfoRowProps {
     value: string;
 }
 
-export interface ImageGallery {
+export interface ImageGallerytype {
     images: string[];
     title: string;
 }

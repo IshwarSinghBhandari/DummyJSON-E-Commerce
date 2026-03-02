@@ -3,7 +3,7 @@
 import React from 'react';
 import { Card, } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ProductSkeleton } from '@/app/types/product';
+import { ProductSkeletonTypes } from '@/app/types/product';
 
 export const ProductCardSkeleton = () => {
     return (
@@ -29,7 +29,7 @@ export const ProductCardSkeleton = () => {
         </Card>
     );
 };
-const ProductSkeleton: React.FC<ProductSkeleton> = ({ count = 8, className = "" }) => {
+const ProductSkeleton: React.FC<ProductSkeletonTypes> = ({ count = 8, className = "" }) => {
     return (
         <div className={`grid sm:grid-cols-2 grid-cols-1   lg:grid-cols-3 xl:grid-cols-4 gap-8 ${className}`}>
             {[...Array(count)].map((_, i) => (

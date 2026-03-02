@@ -11,9 +11,9 @@ import {
     PaginationPrevious,
 } from "@/components/ui/pagination";
 
-import { ProductPagination } from "@/app/types/product";
+import { ProductPaginationTypes } from "@/app/types/product";
 
-const ProductPagination: React.FC<ProductPagination> = ({
+const ProductPagination: React.FC<ProductPaginationTypes> = ({
     total,
     limit,
     skip,
