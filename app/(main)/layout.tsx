@@ -11,7 +11,7 @@ export default async function MainLayout({
     const loggedIn = !!cookieData.get(COOKIE_NAME.ACCESS_TOKEN)
     return (
         <>
-            <Navbar loggedIn={loggedIn} />
+            <Navbar  />
             {children}
             <Footer />
         </>
