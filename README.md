@@ -151,7 +151,6 @@ npm run lint    - Run linter
 
 The application can be deployed on:
 - Vercel
-- Netlify
 
 Make sure environment variables are configured in the hosting platform.
 
